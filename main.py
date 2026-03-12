@@ -1,3 +1,4 @@
+from os import listdir
 from os.path import isdir, join
 from env import src, dst, indexSep, adminTitle, adminSep, sz_useAltMethod
 
@@ -7,11 +8,9 @@ class JDir:
     pathToFsDir = dst
 
     def __init__(self, pathRelative: str):
-
         if type(pathRelative) != str:
             print('Class requires a str, but <', pathRelative, '> was passed with type', type(pathRelative))
             exit(1)
-
         # sanitize str before doing split operations
         if pathRelative[0] == '/':
             pathRelative = pathRelative[1:]
