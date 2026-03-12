@@ -1,6 +1,6 @@
 from os import listdir
 from os.path import isdir, join
-from env import src, dst, indexSep, adminTitle, adminSep, sz_useAltMethod
+from env import src, dst, indexSep, adminTitle, adminSep, sz_useAltMethod, standardZeroTitles, szSep
 
 
 class JDir:
@@ -48,15 +48,74 @@ class JDir:
         else:
             self.isAdminDir = False
 
+        '''
+        requiresAssociatedDirs
+        zeroDirPath
+        zeroDirs
+        associatedDirs
+        '''
+
         # Standard Zero Directories
-        if self.dirDepth == 3:
-            self.zeroDir = None
-        # Areas & Categories use same SZ Dir using alt method
-        elif self.dirDepth == 1 or sz_useAltMethod:
-            self.zeroDir = join(self.area, f'{self.areaIndex}0{indexSep}{self.areaTitle}{adminSep}{adminTitle}')
-        # Categories if SZ alt method is not used
-        else:
-            self.zeroDir = self.pathRelative
+        if self.dirDepth == 1:
+            self.requiresAdditionalDirs = True
+            self.zeroDirPath = join(self.area, f'{self.areaIndex}0{indexSep}{self.areaTitle}{adminSep}{adminTitle}')
+            self.associatedDirs = [self.zeroDirPath]
+            zeroIndexPrepend, zeroTitle = self.zeroDirPath.split('/', 1)[-1].split(indexSep,1)
+            self.zeroDirs = []
+            for i in range(len(standardZeroTitles)):
+                if standardZeroTitles[i]:
+                    standardZeroName = f'{zeroIndexPrepend}.0{i}{indexSep}{zeroTitle}{szSep}{standardZeroTitles[i]}'
+                    self.zeroDirs.append(join(self.zeroDirPath, standardZeroName))
+            for j in self.zeroDirs:
+                self.associatedDirs.append(j)
+
+        elif self.dirDepth == 2:
+            self.requiresAdditionalDirs = True
+            if sz_useAltMethod:
+                self.zeroDirPath = join(self.area, f'{self.areaIndex}0{indexSep}{self.areaTitle}{adminSep}{adminTitle}')
+            else:
+                self.zeroDirPath = self.pathRelative
+            self.associatedDirs = [self.zeroDirPath]
+            self.zeroDirs = []
+            for k in range(len(standardZeroTitles)):
+                if standardZeroTitles[k]:
+                    if sz_useAltMethod:
+                        zeroIndex = self.zeroDirPath.split('/', 1)[-1].split(indexSep,1)[0] + '.' + self.categoryIndex[1] + str(k)
+                    else:
+                        zeroIndex = self.categoryIndex + '.0' + str(k)
+                    zeroTitle = f'{zeroIndex}{indexSep}{self.categoryTitle}{szSep}{standardZeroTitles[k]}'
+                    self.zeroDirs.append(join(self.zeroDirPath, zeroTitle))
+                    self.associatedDirs.append(join(self.zeroDirPath, zeroTitle))
+
+        elif self.dirDepth == 3:
+            self.requiresAdditionalDirs = False
+            self.zeroDirPath = None
+            self.zeroDirs = []
+            self.associatedDirs = []
+
+
+
+
+
+
+
+
+
+
+
+
+        # ----------------------------------------------------------------------------------------------------------------------
+        # ----- Testing --------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------
+        elif self.dirDepth == 3:
+            self.requiresAdditionalDirs = False
+            self.zeroDirPath = None
+            self.zeroDirs = []
+            self.associatedDirs = []
+
+
+
+
 
 
 
@@ -82,5 +141,5 @@ foo = JDir('1_food/11_fruit')
 # print(foo.area, foo.areaIndex, foo.areaTitle)
 # print(foo.category, foo.categoryIndex, foo.categoryTitle)
 # print(foo.id, foo.idIndex, foo.idTitle)
-print(foo.isAdminDir)
-print(foo.zeroDir)
+# print(foo.isAdminDir)
+# print(foo.zeroDirPath, foo.zeroDirIndex, foo.zeroDirTitle)

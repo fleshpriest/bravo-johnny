@@ -1,9 +1,9 @@
-from env import dst, sep, sz_Titles
+from env import dst, sep, standardZeroTitles
 from os import scandir
 from os.path import isdir, join
 
-inboxSubStr = sz_Titles[1]
-somedaySubStr = sz_Titles[8]
+inboxSubStr = standardZeroTitles[1]
+somedaySubStr = standardZeroTitles[8]
 
 
 def filterForInboxDirs (tree: tuple, inboxStr: str) -> tuple[str]:

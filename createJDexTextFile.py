@@ -39,8 +39,8 @@ def saveJdexFile (pathToJdexFile: str, pathToFileSystem: str) -> None:
 
 
 if __name__ == '__main__':
-    from development.env import src, jdexFilePath
-    from development.sys_utils import generateFsTree, convertFsTree
+    from env import src, jdexFilePath
+    from generateLibraryTree import generateFsTree
     from os.path import isfile
 
     if isfile(jdexFilePath):
