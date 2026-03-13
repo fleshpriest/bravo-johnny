@@ -1,29 +1,28 @@
 from env import jdexFileTabsPreferred, jdexFileSpacePerTab, jdexFileMarker
+from utilDirObject import JDir
 
-def generateJdexText (tree: list[str]) -> str:
-    # expects relative list of file paths, outputs text to be written
+def generateJdexText (tree: list[JDir]) -> str:
 
-    treeSteps = convertFsTree(tree, 'relativeList')
-
-    if jdexFileUseTabs:
-        indent = '\t'
+    if jdexFileTabsPreferred:
+        indentation = '\t'
     else:
-        indent = ' ' * jdexFileSpacePerTab
+        indentation = ' ' * jdexFileSpacePerTab
 
     output = ''
-    for dir in treeSteps:
-        tabCount = len(dir) - 1
-        output += f'{indent * tabCount}{jdexFileMarker}{dir[-1]}'
-        if not dir == treeSteps[-1]:
+    for i in range(len(tree)):
+        output += (tree[i].dirDepth - 1) * indentation + jdexFileMarker + tree[i].dirName
+        if not i + 1 == len(tree):
             output += '\n'
 
     return output
 
 
 def saveJdexFile (pathToJdexFile: str, pathToFileSystem: str) -> None:
-    # expects full filepaths. Overwrites existing file.
 
-    treeFs = generateFsTree(pathToFileSystem)
+    treeFs = []
+    for entry in generateFsTree(pathToFileSystem):
+        treeFs.append(JDir(entry))
+
     fileText = generateJdexText(treeFs)
 
     with open(pathToJdexFile, 'w') as f:
