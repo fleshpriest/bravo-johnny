@@ -1,7 +1,6 @@
-from env import src, dst, indexSep
+from env import src, dst
 from generateLibraryTree import generateFsTree
-from os.path import join
-from main import JDir
+from utilDirObject import JDir
 
 msgColorStop = '\033[0m'
 msgColorHead = '\033[95m'

@@ -52,7 +52,7 @@ def checkSomedays () -> tuple[str]:
 
 
 if __name__ == '__main__':
-    from development.sys_utils import generateFsTree
+    from generateLibraryTree import generateFsTree
     from os import getcwd
 
     foo = generateFsTree(dst)
