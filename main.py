@@ -1,13 +1,11 @@
-from os import listdir
-from os.path import isdir, join
+from os import listdir, mkdir
+from os.path import isdir, join, exists
 from env import src, dst, indexSep, adminTitle, adminSep, sz_useAltMethod, standardZeroTitles, szSep
 
 
 class JDir:
-    pathToJdexDir = src
-    pathToFsDir = dst
-
     def __init__(self, pathRelative: str):
+
         if type(pathRelative) != str:
             print('Class requires a str, but <', pathRelative, '> was passed with type', type(pathRelative))
             exit(1)
@@ -19,8 +17,8 @@ class JDir:
 
         # paths
         self.pathRelative = pathRelative
-        self.pathInJDex = join(self.pathToJdexDir, self.pathRelative)
-        self.pathInFs = join(self.pathToFsDir, self.pathRelative)
+        self.pathInJDex = join(src, self.pathRelative)
+        self.pathInFs = join(dst, self.pathRelative)
         self.pathSteps = tuple(pathRelative.split('/', 2))
 
         # Index & Titles for directories
@@ -47,13 +45,6 @@ class JDir:
             self.isAdminDir = True
         else:
             self.isAdminDir = False
-
-        '''
-        requiresAssociatedDirs
-        zeroDirPath
-        zeroDirs
-        associatedDirs
-        '''
 
         # Standard Zero Directories
         if self.dirDepth == 1:
@@ -93,34 +84,20 @@ class JDir:
             self.zeroDirs = []
             self.associatedDirs = []
 
+    def makeDirs(self):
+        dirsToMake = [self.pathInFs]
+        if self.requiresAdditionalDirs:
+            for dir in self.associatedDirs:
+                dirsToMake.append(join(src, dir))
+                dirsToMake.append(join(dst, dir))
 
-
-
-
-
-
-
-
-
-
-
-        # ----------------------------------------------------------------------------------------------------------------------
-        # ----- Testing --------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------
-        elif self.dirDepth == 3:
-            self.requiresAdditionalDirs = False
-            self.zeroDirPath = None
-            self.zeroDirs = []
-            self.associatedDirs = []
-
-
-
-
-
-
-
-
-
+        print('DEBUG CLASS: dirsToMake:')
+        for i in dirsToMake:
+            print(i)
+        for dir in dirsToMake:
+            print('DEBUG CLASS: dir', dir)
+            if not exists(dir):
+                mkdir(dir)
 
 
 
@@ -128,18 +105,5 @@ class JDir:
 # ----- Testing --------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
-# foo = JDir('1_food')
-foo = JDir('1_food/11_fruit')
-# foo = JDir('1_food/11_fruit/11.01_apple')
-
-
-# print(foo.pathRelative)
-# print(foo.pathSteps)
-# print(foo.pathInJDex)
-# print(foo.pathInFs)
-# print(foo.dirDepth)
-# print(foo.area, foo.areaIndex, foo.areaTitle)
-# print(foo.category, foo.categoryIndex, foo.categoryTitle)
-# print(foo.id, foo.idIndex, foo.idTitle)
-# print(foo.isAdminDir)
-# print(foo.zeroDirPath, foo.zeroDirIndex, foo.zeroDirTitle)
+if __name__ == '__main__':
+    print()

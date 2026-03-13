@@ -1,4 +1,4 @@
-from env import dst, sep, standardZeroTitles
+from env import dst, indexSep, standardZeroTitles
 from os import scandir
 from os.path import isdir, join
 
