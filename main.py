@@ -23,6 +23,7 @@ class JDir:
 
         # Index & Titles for directories
         self.dirDepth = len(self.pathSteps)
+        self.dirIndex, self.dirTitle = self.pathSteps[-1].split(indexSep, 1)
         self.area = self.pathSteps[0]
         self.areaIndex, self.areaTitle = self.area.split(indexSep, 1)
         try:

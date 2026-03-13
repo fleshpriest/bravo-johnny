@@ -3,11 +3,6 @@ from os import listdir, makedirs
 from os.path import isdir, exists, join
 # from jd_standardZeros import *
 
-msgColorStop = '\033[0m'
-msgColorHead = '\033[95m'
-msgColorRed = '\033[91m'
-passColor = '\033[92mPASS' + msgColorStop + ' -'
-failColor = '\033[91mFAIL' + msgColorStop + ' -'
 
 
 # def makeDirAndZeros (path: str, rootDst: str) -> None:

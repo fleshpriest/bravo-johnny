@@ -4,5 +4,6 @@ __pycache__/
 tests/
 
 env.py
-todo.md
+tests/todo.md
 test.py
+systemTest.py

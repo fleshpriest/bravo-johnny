@@ -1,6 +1,5 @@
 from os import listdir
 from os.path import join, isdir
-from sys_utils import msgColorRed, msgColorStop
 
 
 def listSubDirs (pathToDir: str) -> list[str]:
@@ -21,6 +20,8 @@ def generateFsTree (pathToDir: str) -> list[str]:
     # Creates a list of full filepaths to represent a directory tree
     # Note: Fixed depth of 3, extended systems are not currently covered
 
+    msgColorStop = '\033[0m'
+    msgColorRed = '\033[91m'
     if not isdir(pathToDir):
         print(f'{msgColorRed}ERROR: {msgColorStop}'
               f'While attempting to generate a file system tree, a non existent path was passed.\n{pathToDir}')
